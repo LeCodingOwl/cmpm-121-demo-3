@@ -144,3 +144,5 @@ function makeCells(playerLocation: { lat: number; lng: number }) {
     }
   }
 }
+
+makeCells(NULL_ISLAND);
