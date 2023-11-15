@@ -78,9 +78,9 @@ sensorButton.addEventListener("click", () => {
   });
 });
 
-let points = 0;
+let coins = 0;
 const statusPanel = document.querySelector<HTMLDivElement>("#statusPanel")!;
-statusPanel.innerHTML = "No points yet...";
+statusPanel.innerHTML = "No coins yet...";
 
 function makePit(i: number, j: number) {
   const bounds = leaflet.latLngBounds([
@@ -107,19 +107,19 @@ function makePit(i: number, j: number) {
         value--;
         container.querySelector<HTMLSpanElement>("#value")!.innerHTML =
           value.toString();
-        points++;
-        statusPanel.innerHTML = `${points} points accumulated`;
+        coins++;
+        statusPanel.innerHTML = `${coins} points accumulated`;
       }
     });
 
     const putIn = container.querySelector<HTMLButtonElement>("#putIn")!;
     putIn.addEventListener("click", () => {
-      if (points > 0) {
+      if (coins > 0) {
         value++;
         container.querySelector<HTMLSpanElement>("#value")!.innerHTML =
           value.toString();
-        points--;
-        statusPanel.innerHTML = `${points} points accumulated`;
+        coins--;
+        statusPanel.innerHTML = `${coins} points accumulated`;
       }
     });
 
