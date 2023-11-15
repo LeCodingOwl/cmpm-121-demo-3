@@ -3,6 +3,7 @@ import "./style.css";
 import leaflet from "leaflet";
 import luck from "./luck";
 import "./leafletWorkaround";
+import { Board } from "./board";
 
 /*
 const MERRILL_CLASSROOM = leaflet.latLng({
@@ -36,9 +37,10 @@ const NULL_ISLAND = {
 };
 
 const GAMEPLAY_ZOOM_LEVEL = 19;
-const TILE_DEGREES = 1e-4;
-const NEIGHBORHOOD_SIZE = 8;
+//const TILE_DEGREES = 1e-4;
+//const NEIGHBORHOOD_SIZE = 8;
 const PIT_SPAWN_PROBABILITY = 0.1;
+const board = new Board(0.0001, 8);
 
 const mapContainer = document.querySelector<HTMLElement>("#map")!;
 
@@ -84,10 +86,13 @@ statusPanel.innerHTML = "No coins yet...";
 
 function makePit(i: number, j: number) {
   const bounds = leaflet.latLngBounds([
-    [NULL_ISLAND.lat + i * TILE_DEGREES, NULL_ISLAND.lng + j * TILE_DEGREES],
     [
-      NULL_ISLAND.lat + (i + 1) * TILE_DEGREES,
-      NULL_ISLAND.lng + (j + 1) * TILE_DEGREES,
+      NULL_ISLAND.lat + i * board.tileWidth,
+      NULL_ISLAND.lng + j * board.tileWidth,
+    ],
+    [
+      NULL_ISLAND.lat + (i + 1) * board.tileWidth,
+      NULL_ISLAND.lng + (j + 1) * board.tileWidth,
     ],
   ]);
 
@@ -135,8 +140,16 @@ function makeCells(playerLocation: { lat: number; lng: number }) {
     playerLocation.lng
   );
   if (playerCell) {
-    for (let i = -NEIGHBORHOOD_SIZE; i < NEIGHBORHOOD_SIZE; i++) {
-      for (let j = -NEIGHBORHOOD_SIZE; j < NEIGHBORHOOD_SIZE; j++) {
+    for (
+      let i = -board.tileVisibilityRadius;
+      i < board.tileVisibilityRadius;
+      i++
+    ) {
+      for (
+        let j = -board.tileVisibilityRadius;
+        j < board.tileVisibilityRadius;
+        j++
+      ) {
         if (luck([i, j].toString()) < PIT_SPAWN_PROBABILITY) {
           makePit(i, j);
         }
